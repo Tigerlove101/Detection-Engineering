@@ -45,12 +45,20 @@ flowchart LR
 
 Rules are created in Sentinel (Microsoft Defender portal) under **Microsoft Sentinel > Configuration > Analytics > Scheduled query rule**.
 
-<img width="951" height="326" alt="Screenshot 2026-10-03 012118" src="https://github.com/user-attachments/assets/77c93f9f-d5a4-43c4-babf-2a2d86537f3b" />
+<img width="936" height="463" alt="Screenshot 2026-10-03 011955" src="https://github.com/user-attachments/assets/bb013deb-6571-43eb-bdd0-6ef67ae082ce" />
+
+
+
+
 
 
 ### Detection 2: Brute force
 
 **Logic.** Repeated failures against one account from one source. The threshold is aligned to the account lockout policy.
+
+
+<img width="619" height="431" alt="Screenshot 2026-10-03 185711" src="https://github.com/user-attachments/assets/045bf732-30e6-4940-9e5e-3f37b8194530" />
+
 
 ```kql
 SecurityEvent
@@ -81,6 +89,8 @@ All tests were run in an isolated lab against dedicated test accounts.
 Simulation method and tooling: I intentionally typed in wrong passwords multiple times followed by a correct password from the Active Directory computer keyboard to trigger the alert. i discovered the account lockout policy does not apply to the Active Directory default account. 
 
 ## Incident report
+
+<img width="951" height="326" alt="Screenshot 2026-10-03 012118" src="https://github.com/user-attachments/assets/77c93f9f-d5a4-43c4-babf-2a2d86537f3b" />
 
 ### Incident 1: [title from Sentinel]
 
