@@ -11,7 +11,7 @@ This project covers detection and response: writing detection rules in Sentinel,
 Lab Diagram.
 <img width="2720" height="2560" alt="corrected_original_layout_diagram" src="https://github.com/user-attachments/assets/8b31b6f6-be04-48d7-a68d-e61edc4ad942" />
 
-Log collection is covered separately in the [Azure Arc Onboarding project](../azure-arc-onboarding) (update this link to your repo). This project assumes Windows Security events from the lab machines are already available in the `SecurityEvent` table.
+Log collection is covered separately in the (https://github.com/Tigerlove101/Onboarding-On-Prem-Windows-Servers-to-Azure-Arc-at-Scale-Using-Group-Policy)  This project assumes Windows Security events from the lab machines are already available in the `SecurityEvent` table.
 
 ## Threat model
 
