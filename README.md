@@ -36,7 +36,7 @@ flowchart LR
     G -->|False positive| I[Tune rule]
 ```
 
-## Detection rules
+## Detection rule1: Brute-force password guessing. 
 
 | # | Detection | Severity | ATT&CK | Events |
 |---|---|---|---|---|
@@ -45,19 +45,21 @@ flowchart LR
 
 Rules are created in Sentinel (Microsoft Defender portal) under **Microsoft Sentinel > Configuration > Analytics > Scheduled query rule**.
 
-<img width="936" height="463" alt="Screenshot 2026-10-03 011955" src="https://github.com/user-attachments/assets/bb013deb-6571-43eb-bdd0-6ef67ae082ce" />
 
-
-
-
-
-
-### Detection 2: Brute force
-
-**Logic.** Repeated failures against one account from one source. The threshold is aligned to the account lockout policy.
+**Logic.** Repeated failures against Active Directory account followed by a successful logon.  the account lockout policy does not apply to the Active Directory Admin account.
 
 
 <img width="619" height="431" alt="Screenshot 2026-10-03 185711" src="https://github.com/user-attachments/assets/045bf732-30e6-4940-9e5e-3f37b8194530" />
+
+
+
+
+### Detection rule2: Brute force
+
+**Logic.** Repeated failures against one account from one source. The threshold is aligned to the account lockout policy.
+
+<img width="656" height="460" alt="Screenshot 2026-10-03 185610" src="https://github.com/user-attachments/assets/ad6f22a8-4d05-4511-805e-b718405b187b" />
+
 
 
 ```kql
@@ -86,50 +88,60 @@ All tests were run in an isolated lab against dedicated test accounts.
 | 1 | successful login after multiple failed attempt accounts | Detection 1 | [Fired] |
 | 2 | Repeated bad passwords against one account | Detection 2 | [Fired] |
 
-Simulation method and tooling: I intentionally typed in wrong passwords multiple times followed by a correct password from the Active Directory computer keyboard to trigger the alert. i discovered the account lockout policy does not apply to the Active Directory default account. 
+Simulation method and tooling: I intentionally typed in wrong passwords multiple times followed by a correct password from the Active Directory computer keyboard to trigger the alert. I discovered the account lockout policy does not apply to the Active Directory default account. 
 
 ## Incident report
 
 <img width="951" height="326" alt="Screenshot 2026-10-03 012118" src="https://github.com/user-attachments/assets/77c93f9f-d5a4-43c4-babf-2a2d86537f3b" />
 
-### Incident 1: [title from Sentinel]
+### Incident 1:
 
 | Field | Value |
 |---|---|
-| Detected | [timestamp] |
-| Severity | [severity] |
-| Triggering rule | [rule name] |
-| Source IP | [ip] |
-| Target accounts | [accounts] |
-| Target host | [host] |
-| ATT&CK | [technique] |
-| Verdict | [False positive]|
+| Detected | [2026-10-02T15:04:48.9657388Z] |
+| Severity | [medium] |
+| Triggering rule | [Brute-force 2] |
+| Source IP | [172.0.0.1] |
+| Target accounts | [moni/betty] |
+| Target host | [mo2] |
+| ATT&CK | [T1110.003] |
+| Verdict | [expected]|
+
+<img width="665" height="472" alt="Screenshot 2026-10-03 191215" src="https://github.com/user-attachments/assets/33e29f83-e505-43d2-848a-e2114f762bc5" />
+
+
+
+### Incident 2:
+
+| Field | Value |
+|---|---|
+| Detected | [2026-10-02T15:04:48.9657388Z] |
+| Severity | [High] |
+| Triggering rule | [Brute-force-password guessing] |
+| Source IP | [172.0.0.1] |
+| Target accounts | [moadmin] |
+| Target host | [mo-svr] |
+| ATT&CK | [T1110.003] |
+| Verdict | [expected]|
+
+
+<img width="672" height="470" alt="Screenshot 2026-10-03 191145" src="https://github.com/user-attachments/assets/954e6e24-c13f-4265-85bb-c6ae62cff911" />
+
 
 
 **Triage.** The alert reported brute-force account . The activity was expected.
 
 **Investigation.** Pivoted on the source IP to see every account and host involved, and checked whether any attempt succeeded:
 
-```kql
-SecurityEvent
-| where TimeGenerated between (datetime([start]) .. datetime([end]))
-| where IpAddress == "[ip]"
-| where EventID in (4624, 4625)
-| project TimeGenerated, Computer, EventID, TargetUserName, LogonType, Status, SubStatus
-| order by TimeGenerated asc
-```
 
-| Time | Event | Significance |
-|---|---|---|
-| [time] | [event] | [meaning] |
-| [time] | [event] | [meaning] |
+<img width="785" height="494" alt="Screenshot 2026-10-03 192906" src="https://github.com/user-attachments/assets/c52e3769-687d-4fb2-ac2f-68c452424c8a" />
 
 
-**Response and recommendations.** [Containment steps (block the source, reset targeted accounts), this doesnt need to be escalated because it is expected. 
+<img width="949" height="471" alt="Screenshot 2026-10-03 192556" src="https://github.com/user-attachments/assets/32f9dce1-d96c-4d2f-af77-813df139923d" />
 
-**Closure notes.** [The note you would leave in the ticket.]
 
-Evidence: `screenshots/02-alert.png`, `screenshots/03-incident.png`, `screenshots/04-investigation.png`
+
+**Closure notes.** The similation and alert generated were all expected 
 
 ## Triage and escalation
 
@@ -141,13 +153,10 @@ For each alert:
 4. What happened after a successful logon?
 5. Is this expected activity (admin task, service account, authorized test)?
 
-**Escalate to Tier 2 when:** a privileged account is targeted, a successful logon follows the failures, multiple hosts are involved, or later activity suggests persistence or lateral movement.
+## Closing note :
+This doesn't need to be escalated because it is expected.a privileged account is targeted, a successful logon follows the failures, multiple hosts are involved, or later activity suggests persistence or lateral movement.
 
 
-
-## Next steps
-
-Full incident response walkthrough, threat intelligence enrichment of source IPs, and a SOAR playbook for automated response.
 
 ## Skills demonstrated
 
