@@ -1,8 +1,8 @@
 # Detection Engineering: Detecting Credential Attacks in Microsoft Sentinel
 
-**Role:** Tier 1 SOC Analyst / detection engineering (project)
-**Tools:** Microsoft Sentinel, KQL, Windows Security logs, MITRE ATT&CK
 **Scope:** Custom detection rules, attack simulation, alert triage, incident investigation, reporting
+**Tools:** Microsoft Sentinel, KQL, Windows Security logs, MITRE ATT&CK
+
 
 ## Overview
 
@@ -17,7 +17,7 @@ Log collection is covered separately in the (https://github.com/Tigerlove101/Onb
 
 | Attack | Why it matters | ATT&CK |
 |---|---|---|
-| Password spraying | Low-and-slow attempts across many accounts avoid lockout | T1110.003 Password Spraying |
+| Brute force | Repeated wrong password attempts against the Active Directory accounts to avoid lockout followed by successful logon  | T1110.001 Password Guessing |
 | Brute force | Repeated guesses against a single account | T1110.001 Password Guessing |
 
 **Design decision.** The lab's AD account lockout threshold is set to 3, which already limits single-account brute force. Spraying works around that control by trying few passwords against many accounts, so the flagship detection correlates failed logons across accounts by source IP. A single-account brute-force rule is kept as a complementary detection.
@@ -40,7 +40,7 @@ flowchart LR
 
 | # | Detection | Severity | ATT&CK | Events |
 |---|---|---|---|---|
-| 1 | Password spray: failed logons across multiple accounts from one source | High | T1110.003 | 4625 |
+| 1 | Password guess: multiple failed logons followed by a successful logon | High | T1110.003 | 4625 |
 | 2 | Brute force: repeated failed logons against one account | Medium | T1110.001 | 4625 |
 
 Rules are created in Sentinel (Microsoft Defender portal) under **Microsoft Sentinel > Configuration > Analytics > Scheduled query rule**.
@@ -63,7 +63,6 @@ SecurityEvent
 | where FailedAttempts >= 5
 ```
 
-Use the threshold you configured. Confirmed firing during testing.
 
 | Setting | Value |
 |---|---|
@@ -97,7 +96,7 @@ Simulation method and tooling: I intentionally typed in wrong passwords multiple
 | Verdict | [False positive]|
 
 
-**Triage.** [the alert reported bruteforce account . The activity was expected].
+**Triage.** The alert reported brute-force account . The activity was expected.
 
 **Investigation.** Pivoted on the source IP to see every account and host involved, and checked whether any attempt succeeded:
 
