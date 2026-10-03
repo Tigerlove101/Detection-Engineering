@@ -115,7 +115,7 @@ Simulation method and tooling: I intentionally typed in wrong passwords multiple
 
 | Field | Value |
 |---|---|
-| Detected | [2026-10-02T15:04:48.9657388Z] |
+| Detected | [2026-10-02T15:49:06.1858102Z] |
 | Severity | [High] |
 | Triggering rule | [Brute-force-password guessing] |
 | Source IP | [172.0.0.1] |
