@@ -146,7 +146,7 @@ Simulation method and tooling: I intentionally typed in wrong passwords multiple
 
 
 
-**Closure notes.** The similation and alert generated were all expected 
+**Closure notes.** The similation and alert generated were all expected.
 
 ## Triage and escalation
 
@@ -165,4 +165,4 @@ This doesn't need to be escalated because it is expected.a privileged account is
 
 ## Skills demonstrated
 
-Detection engineering · KQL · Microsoft Sentinel · MITRE ATT&CK · Alert triage · Incident investigation · Windows Security event analysis · Incident documentation
+Detection engineering | KQL | Microsoft Sentinel | MITRE ATT&CK | Alert triage | Incident investigation | Windows Security event analysis | Incident documentation |
