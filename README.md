@@ -136,8 +136,13 @@ Simulation method and tooling: I intentionally typed in wrong passwords multiple
 
 <img width="785" height="494" alt="Screenshot 2026-10-03 192906" src="https://github.com/user-attachments/assets/c52e3769-687d-4fb2-ac2f-68c452424c8a" />
 
+<img width="937" height="454" alt="Screenshot 2026-10-03 202023" src="https://github.com/user-attachments/assets/12d090c9-273a-48ad-854e-6edb428ef8f7" />
+
+
 
 <img width="949" height="471" alt="Screenshot 2026-10-03 192556" src="https://github.com/user-attachments/assets/32f9dce1-d96c-4d2f-af77-813df139923d" />
+
+<img width="926" height="459" alt="Screenshot 2026-10-03 201954" src="https://github.com/user-attachments/assets/ce29fba7-3be7-4c38-8984-d7eb63126da5" />
 
 
 
